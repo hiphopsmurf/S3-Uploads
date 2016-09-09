@@ -114,7 +114,13 @@ class S3_Uploads {
 	public function wp_filter_delete_file( $file_path ) {
 		$dir = wp_upload_dir();
 
-		return str_replace( trailingslashit( $dir['basedir'] ), '', $file_path );
+		$strip_path = str_replace( trailingslashit( $dir['basedir'] ), '', $file_path );
+		
+		if(preg_match("/[0-9]{2,4}x[0-9]{2,4}/", $strip_path)) {
+			return $strip_path;
+		}else{
+			return $file_path;
+		}
 	}
 
 	public function get_s3_url() {
